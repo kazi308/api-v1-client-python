@@ -55,15 +55,24 @@ def get_block_height(height, api_code=None):
     return [Block(b) for b in json_response['blocks']]
 
 
-def get_address(address, api_code=None):
-    """Get data for a single address.
+def get_address(address, filter=None, limit=None, offset=None, api_code=None):
+    """Get data for a single address including an address balance and list of relevant transactions
     
-    :param str address: address to look up
+    :param str address: address(base58 or hash160) to look up
+    :param int filter: the filter for transactions selection (optional)
+    :param int limit: limit number of transactions to display (optional)
+    :param int offset: number of transactions to skip when display (optional)
     :param str api_code: Blockchain.info API code (optional)
     :return: an instance of :class:`Address` class
     """
     
     resource = 'rawaddr/' + address
+    if filter is not None:
+        resource += '?filter=' + str(filter)
+    if limit is not None:
+        resource += '?limit=' + str(limit)
+    if offset is not None:
+        resource += '?offset=' + str(offset)
     if api_code is not None:
         resource += '?api_code=' + api_code
     response = util.call_api(resource)
