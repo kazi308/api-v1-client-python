@@ -8,9 +8,9 @@ import json
 
 
 def get_block(block_id, api_code=None):
-    """Get a single block based on a block index or hash.
+    """Get a single block based on a block hash.
     
-    :param str block_id: block hash or index to look up
+    :param str block_id: block hash to look up
     :param str api_code: Blockchain.info API code (optional)
     :return: an instance of :class:`Block` class
     """
@@ -24,9 +24,9 @@ def get_block(block_id, api_code=None):
 
 
 def get_tx(tx_id, api_code=None):
-    """Get a single transaction based on a transaction index or hash.
+    """Get a single transaction based on a transaction hash.
     
-    :param str tx_id: transaction hash or index to look up
+    :param str tx_id: transaction hash to look up
     :param str api_code: Blockchain.info API code (optional)
     :return: an instance of :class:`Transaction` class
     """

@@ -2,11 +2,11 @@
 All functions support an optional parameter called `api_code`. It won't be listed with every function description.
 
 ####`get_block`
-Get a single block based on a block index or hash. Returns a `Block` object.
+Get a single block based on a block hash. Returns a `Block` object.
 
 Params: 
 ```
-block_id : str - block index or hash
+block_id : str - block hash
 ```
 
 Usage:
@@ -17,11 +17,11 @@ block = blockexplorer.get_block('000000000000000016f9a2c3e0f4c1245ff24856a79c348
 ```
 
 ####`get_tx`
-Get a single transaction based on a transaction index or hash. Returns a `Transaction` object.
+Get a single transaction based on a transaction hash. Returns a `Transaction` object.
 
 Params:
 ```
-tx_id : str - transaction index or hash
+tx_id : str - transaction hash
 ```
 
 Usage:
