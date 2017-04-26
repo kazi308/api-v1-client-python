@@ -132,6 +132,28 @@ def get_multi_address(addresses, filter=None, limit=None, offset=None, api_code=
     return MultiAddress(json_response)
 
 
+def get_balance(addresses, filter=None, api_code=None):
+    """Get aggregate summary for multiple addresses including overall balance, per address balance
+     and list of relevant transactions
+
+    :param tuple addresses: addresses(xpub or base58) to look up
+    :param int filter: the filter for transactions selection (optional)
+    :param str api_code: Blockchain.info API code (optional)
+    :return: a dictionary of str, :class:`Balance`
+    """
+
+    resource = 'balance?active=' + '|'.join(addresses)
+    print resource
+    if filter is not None:
+        resource += '&filter=' + str(filter)
+    if api_code is not None:
+        resource += '&api_code=' + api_code
+    response = util.call_api(resource)
+    json_response = json.loads(response)
+
+    return {k: Balance(v) for (k, v) in json_response.items()}
+
+
 def get_unspent_outputs(addresses, confirmations=None, limit=None, api_code=None):
     """Get unspent outputs for a single address.
     
@@ -369,6 +391,13 @@ class Block:
         self.transactions = [Transaction(t) for t in b['tx']]
         for tx in self.transactions:
             tx.block_height = self.height
+
+
+class Balance:
+    def __init__(self, b):
+        self.final_balance = b['final_balance']
+        self.n_tx = b['n_tx']
+        self.total_received = b['total_received']
 
 
 class InventoryData:

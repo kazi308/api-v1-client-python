@@ -120,5 +120,18 @@ class TestGetUnspentOutputs(unittest.TestCase):
         self.assertEqual(20000, output.value)
 
 
+class TestGetBalance(unittest.TestCase):
+    def test_getBalance(self):
+        address1 = 'xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn'
+        address2 = '1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW'
+        balances = get_balance(addresses=(address1, address2))
+        self.assertEqual(2, len(balances))
+
+        balance0 = balances['1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW']
+        self.assertEqual(20000, balance0.total_received)
+        self.assertEqual(0, balance0.final_balance)
+        self.assertEqual(2, balance0.n_tx)
+
+
 if __name__ == '__main__':
     unittest.main()
