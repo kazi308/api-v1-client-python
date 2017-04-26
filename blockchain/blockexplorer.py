@@ -88,7 +88,7 @@ def get_xpub(xpub, filter=None, limit=None, offset=None, api_code=None):
     :param int limit: limit number of transactions to fetch (optional)
     :param int offset: number of transactions to skip when fetch (optional)
     :param str api_code: Blockchain.info API code (optional)
-    :return: an instance of :class:`Address` class
+    :return: an instance of :class:`Xpub` class
     """
 
     resource = 'multiaddr?active=' + xpub
@@ -103,6 +103,33 @@ def get_xpub(xpub, filter=None, limit=None, offset=None, api_code=None):
     response = util.call_api(resource)
     json_response = json.loads(response)
     return Xpub(json_response)
+
+
+def get_multi_address(addresses, filter=None, limit=None, offset=None, api_code=None):
+    """Get aggregate summary for multiple addresses including overall balance, per address balance
+     and list of relevant transactions
+
+    :param tuple addresses: addresses(xpub or base58) to look up
+    :param int filter: the filter for transactions selection (optional)
+    :param int limit: limit number of transactions to fetch (optional)
+    :param int offset: number of transactions to skip when fetch (optional)
+    :param str api_code: Blockchain.info API code (optional)
+    :return: an instance of :class:`MultiAddress` class
+    """
+
+    resource = 'multiaddr?active=' + '|'.join(addresses)
+    print resource
+    if filter is not None:
+        resource += '?filter=' + str(filter)
+    if limit is not None:
+        resource += '?limit=' + str(limit)
+    if offset is not None:
+        resource += '?offset=' + str(offset)
+    if api_code is not None:
+        resource += '?api_code=' + api_code
+    response = util.call_api(resource)
+    json_response = json.loads(response)
+    return MultiAddress(json_response)
 
 
 def get_unspent_outputs(address, api_code=None):
@@ -227,6 +254,29 @@ class Address:
         self.total_received = a['total_received']
         self.total_sent = a['total_sent']
         self.final_balance = a['final_balance']
+        self.transactions = [Transaction(tx) for tx in a['txs']]
+
+
+# to represent the address summary in multiaddress
+class SimpleAddress:
+    def __init__(self, a):
+        self.address = a['address']
+        self.n_tx = a['n_tx']
+        self.total_received = a['total_received']
+        self.total_sent = a['total_sent']
+        self.final_balance = a['final_balance']
+        self.change_index = a['change_index']
+        self.account_index = a['account_index']
+
+
+class MultiAddress:
+    def __init__(self, a):
+        self.n_tx = a['wallet']['n_tx']
+        self.n_tx_filtered = a['wallet']['n_tx_filtered']
+        self.total_received = a['wallet']['total_received']
+        self.total_sent = a['wallet']['total_sent']
+        self.final_balance = a['wallet']['final_balance']
+        self.addresses = [SimpleAddress(addr) for addr in a['addresses']]
         self.transactions = [Transaction(tx) for tx in a['txs']]
 
 
