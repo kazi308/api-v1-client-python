@@ -132,15 +132,24 @@ def get_multi_address(addresses, filter=None, limit=None, offset=None, api_code=
     return MultiAddress(json_response)
 
 
-def get_unspent_outputs(address, api_code=None):
+def get_unspent_outputs(addresses, confirmations=None, limit=None, api_code=None):
     """Get unspent outputs for a single address.
     
-    :param str address: address to look up
+    :param tuple addresses: addresses(xpub or base58) to look up
+    :param int confirmations: minimum confirmations to include
+    :param int limit: limit number of unspent outputs to fetch
     :param str api_code: Blockchain.info API code (optional)
     :return: an array of :class:`UnspentOutput` objects
     """
-    
-    resource = 'unspent?active=' + address
+
+    if isinstance(addresses, basestring):
+        resource = 'unspent?active=' + addresses
+    else:
+        resource = 'unspent?active=' + '|'.join(addresses)
+    if confirmations is not None:
+        resource += '&confirmations=' + str(confirmations)
+    if limit is not None:
+        resource += '&limit=' + str(limit)
     if api_code is not None:
         resource += '&api_code=' + api_code
     response = util.call_api(resource)
