@@ -54,5 +54,19 @@ class TestGetAddress(unittest.TestCase):
         self.assertEqual(1, len(address.transactions))
 
 
+class TestGetXpub(unittest.TestCase):
+    def test_getXpub(self):
+        xpub = get_xpub('xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn')
+        self.assertEqual('xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn', xpub.address)
+        self.assertEqual(20000, xpub.final_balance)
+        self.assertEqual(1, xpub.n_tx)
+        self.assertEqual(20000, xpub.total_received)
+        self.assertEqual(0, xpub.total_sent)
+        self.assertEqual(1, len(xpub.transactions))
+        self.assertEqual(0, xpub.change_index)
+        self.assertEqual(1, xpub.account_index)
+        self.assertEqual(20, xpub.gap_limit)
+
+
 if __name__ == '__main__':
     unittest.main()

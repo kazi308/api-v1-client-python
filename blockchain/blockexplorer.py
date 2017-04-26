@@ -80,6 +80,31 @@ def get_address(address, filter=None, limit=None, offset=None, api_code=None):
     return Address(json_response)
 
 
+def get_xpub(xpub, filter=None, limit=None, offset=None, api_code=None):
+    """Get data for a single xpub including balance and list of relevant transactions
+
+    :param str xpub: address(xpub) to look up
+    :param int filter: the filter for transactions selection (optional)
+    :param int limit: limit number of transactions to fetch (optional)
+    :param int offset: number of transactions to skip when fetch (optional)
+    :param str api_code: Blockchain.info API code (optional)
+    :return: an instance of :class:`Address` class
+    """
+
+    resource = 'multiaddr?active=' + xpub
+    if filter is not None:
+        resource += '?filter=' + str(filter)
+    if limit is not None:
+        resource += '?limit=' + str(limit)
+    if offset is not None:
+        resource += '?offset=' + str(offset)
+    if api_code is not None:
+        resource += '?api_code=' + api_code
+    response = util.call_api(resource)
+    json_response = json.loads(response)
+    return Xpub(json_response)
+
+
 def get_unspent_outputs(address, api_code=None):
     """Get unspent outputs for a single address.
     
@@ -202,6 +227,20 @@ class Address:
         self.total_received = a['total_received']
         self.total_sent = a['total_sent']
         self.final_balance = a['final_balance']
+        self.transactions = [Transaction(tx) for tx in a['txs']]
+
+
+class Xpub:
+    def __init__(self, a):
+        xpub = a['addresses'][0]
+        self.address = xpub['address']
+        self.n_tx = xpub['n_tx']
+        self.total_received = xpub['total_received']
+        self.total_sent = xpub['total_sent']
+        self.final_balance = xpub['final_balance']
+        self.change_index = xpub['change_index']
+        self.account_index = xpub['account_index']
+        self.gap_limit = xpub['gap_limit']
         self.transactions = [Transaction(tx) for tx in a['txs']]
 
 
