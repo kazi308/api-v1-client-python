@@ -24,7 +24,7 @@ class TestGetAddress(unittest.TestCase):
         self.assertEqual(2, len(address.transactions))
 
     def test_getAddressWithFilter(self):
-        address = get_address('07feead7f9fb7d16a0251421ac9fa090169cc169', filter=4)
+        address = get_address('07feead7f9fb7d16a0251421ac9fa090169cc169', filter=FilterType.All)
         self.assertEqual('1jH7K4RJrQBXijtLj1JpzqPRhR7MdFtaW', address.address)
         self.assertEqual('07feead7f9fb7d16a0251421ac9fa090169cc169', address.hash160)
         self.assertEqual(0, address.final_balance)

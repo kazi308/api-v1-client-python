@@ -5,6 +5,7 @@ at https://blockchain.info/api/blockchain_api
 
 from . import util
 import json
+import enum
 
 
 def get_block(block_id, api_code=None):
@@ -59,7 +60,7 @@ def get_address(address, filter=None, limit=None, offset=None, api_code=None):
     """Get data for a single address including an address balance and list of relevant transactions
     
     :param str address: address(base58 or hash160) to look up
-    :param int filter: the filter for transactions selection (optional)
+    :param FilterType filter: the filter for transactions selection (optional)
     :param int limit: limit number of transactions to display (optional)
     :param int offset: number of transactions to skip when display (optional)
     :param str api_code: Blockchain.info API code (optional)
@@ -68,7 +69,10 @@ def get_address(address, filter=None, limit=None, offset=None, api_code=None):
     
     resource = 'address/{0}?format=json'.format(address)
     if filter is not None:
-        resource += '&filter=' + str(filter)
+        if isinstance(filter, FilterType):
+            resource += '&filter=' + str(filter.value)
+        else:
+            raise ValueError('Filter must be of FilterType enum')
     if limit is not None:
         resource += '&limit=' + str(limit)
     if offset is not None:
@@ -84,7 +88,7 @@ def get_xpub(xpub, filter=None, limit=None, offset=None, api_code=None):
     """Get data for a single xpub including balance and list of relevant transactions
 
     :param str xpub: address(xpub) to look up
-    :param int filter: the filter for transactions selection (optional)
+    :param FilterType filter: the filter for transactions selection (optional)
     :param int limit: limit number of transactions to fetch (optional)
     :param int offset: number of transactions to skip when fetch (optional)
     :param str api_code: Blockchain.info API code (optional)
@@ -93,7 +97,10 @@ def get_xpub(xpub, filter=None, limit=None, offset=None, api_code=None):
 
     resource = 'multiaddr?active=' + xpub
     if filter is not None:
-        resource += '&filter=' + str(filter)
+        if isinstance(filter, FilterType):
+            resource += '&filter=' + str(filter.value)
+        else:
+            raise ValueError('Filter must be of FilterType enum')
     if limit is not None:
         resource += '&limit=' + str(limit)
     if offset is not None:
@@ -110,7 +117,7 @@ def get_multi_address(addresses, filter=None, limit=None, offset=None, api_code=
      and list of relevant transactions
 
     :param tuple addresses: addresses(xpub or base58) to look up
-    :param int filter: the filter for transactions selection (optional)
+    :param FilterType filter: the filter for transactions selection (optional)
     :param int limit: limit number of transactions to fetch (optional)
     :param int offset: number of transactions to skip when fetch (optional)
     :param str api_code: Blockchain.info API code (optional)
@@ -119,7 +126,10 @@ def get_multi_address(addresses, filter=None, limit=None, offset=None, api_code=
 
     resource = 'multiaddr?active=' + '|'.join(addresses)
     if filter is not None:
-        resource += '&filter=' + str(filter)
+        if isinstance(filter, FilterType):
+            resource += '&filter=' + str(filter.value)
+        else:
+            raise ValueError('Filter must be of FilterType enum')
     if limit is not None:
         resource += '&limit=' + str(limit)
     if offset is not None:
@@ -136,14 +146,17 @@ def get_balance(addresses, filter=None, api_code=None):
      and list of relevant transactions
 
     :param tuple addresses: addresses(xpub or base58) to look up
-    :param int filter: the filter for transactions selection (optional)
+    :param FilterType filter: the filter for transactions selection (optional)
     :param str api_code: Blockchain.info API code (optional)
     :return: a dictionary of str, :class:`Balance`
     """
 
     resource = 'balance?active=' + '|'.join(addresses)
     if filter is not None:
-        resource += '&filter=' + str(filter)
+        if isinstance(filter, FilterType):
+            resource += '&filter=' + str(filter.value)
+        else:
+            raise ValueError('Filter must be of FilterType enum')
     if api_code is not None:
         resource += '&api_code=' + api_code
     response = util.call_api(resource)
@@ -381,3 +394,9 @@ class Balance:
         self.final_balance = b['final_balance']
         self.n_tx = b['n_tx']
         self.total_received = b['total_received']
+
+
+class FilterType(enum.Enum):
+    All = 4
+    ConfirmedOnly = 5
+    RemoveUnspendable = 6
