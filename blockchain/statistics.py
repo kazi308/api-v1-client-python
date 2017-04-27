@@ -23,7 +23,7 @@ def get(api_code=None):
 
 
 def get_chart(chart_type, time_span=None, rolling_average=None, api_code=None):
-    """Get network statistics.
+    """Get chart data of a specific chart type.
 
     :param str chart_type: type of chart
     :param str time_span: duration of the chart.
@@ -44,6 +44,25 @@ def get_chart(chart_type, time_span=None, rolling_average=None, api_code=None):
     response = util.call_api(resource)
     json_response = json.loads(response)
     return Chart(json_response)
+
+
+def get_pools(time_span=None, api_code=None):
+    """Get number of blocks mined by each pool.
+
+    :param str time_span: duration of the chart.
+    Default is 4days (optional)
+    :param str api_code: Blockchain.info API code (optional)
+    :return: an instance of dict:{str,int}
+    """
+
+    resource = 'pools'
+    if time_span is not None:
+        resource += '?timespan=' + time_span
+    if api_code is not None:
+        resource += '&api_code=' + api_code
+    response = util.call_api_new(resource)
+    json_response = json.loads(response)
+    return {k: v for (k, v) in json_response.items()}
 
 
 class Stats:

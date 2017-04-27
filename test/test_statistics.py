@@ -12,5 +12,11 @@ class TestGetChart(unittest.TestCase):
         self.assertEqual('The total number of bitcoins that have already been mined; in other words, the current supply of bitcoins on the network.', chart_data.description)
 
 
+class TestGetPools(unittest.TestCase):
+    def test_getPools(self):
+        pools = get_pools('5days')
+        self.assertTrue(len(pools) > 0)
+
+
 if __name__ == '__main__':
     unittest.main()
