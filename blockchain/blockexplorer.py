@@ -234,21 +234,6 @@ def get_blocks(time=None, pool_name=None, api_code=None):
     return [SimpleBlock(b) for b in json_response['blocks']]
 
 
-def get_inventory_data(hash, api_code=None):
-    """Get inventory data.
-    
-    :param str hash: tx or block hash
-    :param str api_code: Blockchain.info API code (optional)
-    :return: an instance of :class:`InventoryData` class
-    """
-    resource = 'inv/{0}?format=json'.format(hash)
-    if api_code is not None:
-        resource += '&api_code=' + api_code
-    response = util.call_api(resource)
-    json_response = json.loads(response)
-    return InventoryData(json_response)
-
-
 class SimpleBlock:
     def __init__(self, b):
         self.height = b['height']
@@ -398,14 +383,3 @@ class Balance:
         self.final_balance = b['final_balance']
         self.n_tx = b['n_tx']
         self.total_received = b['total_received']
-
-
-class InventoryData:
-    def __init__(self, i):
-        self.hash = i['hash']
-        self.type = i['type']
-        self.initial_time = int(i['initial_time'])
-        self.initial_ip = i['initial_ip']
-        self.nconnected = int(i['nconnected'])
-        self.relayed_count = int(i['relayed_count'])
-        self.relayed_percent = int(i['relayed_percent'])
