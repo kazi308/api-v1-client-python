@@ -66,15 +66,15 @@ def get_address(address, filter=None, limit=None, offset=None, api_code=None):
     :return: an instance of :class:`Address` class
     """
     
-    resource = 'rawaddr/' + address
+    resource = 'address/{0}?format=json'.format(address)
     if filter is not None:
-        resource += '?filter=' + str(filter)
+        resource += '&filter=' + str(filter)
     if limit is not None:
-        resource += '?limit=' + str(limit)
+        resource += '&limit=' + str(limit)
     if offset is not None:
-        resource += '?offset=' + str(offset)
+        resource += '&offset=' + str(offset)
     if api_code is not None:
-        resource += '?api_code=' + api_code
+        resource += '&api_code=' + api_code
     response = util.call_api(resource)
     json_response = json.loads(response)
     return Address(json_response)
@@ -93,13 +93,13 @@ def get_xpub(xpub, filter=None, limit=None, offset=None, api_code=None):
 
     resource = 'multiaddr?active=' + xpub
     if filter is not None:
-        resource += '?filter=' + str(filter)
+        resource += '&filter=' + str(filter)
     if limit is not None:
-        resource += '?limit=' + str(limit)
+        resource += '&limit=' + str(limit)
     if offset is not None:
-        resource += '?offset=' + str(offset)
+        resource += '&offset=' + str(offset)
     if api_code is not None:
-        resource += '?api_code=' + api_code
+        resource += '&api_code=' + api_code
     response = util.call_api(resource)
     json_response = json.loads(response)
     return Xpub(json_response)
@@ -118,15 +118,14 @@ def get_multi_address(addresses, filter=None, limit=None, offset=None, api_code=
     """
 
     resource = 'multiaddr?active=' + '|'.join(addresses)
-    print resource
     if filter is not None:
-        resource += '?filter=' + str(filter)
+        resource += '&filter=' + str(filter)
     if limit is not None:
-        resource += '?limit=' + str(limit)
+        resource += '&limit=' + str(limit)
     if offset is not None:
-        resource += '?offset=' + str(offset)
+        resource += '&offset=' + str(offset)
     if api_code is not None:
-        resource += '?api_code=' + api_code
+        resource += '&api_code=' + api_code
     response = util.call_api(resource)
     json_response = json.loads(response)
     return MultiAddress(json_response)
@@ -143,7 +142,6 @@ def get_balance(addresses, filter=None, api_code=None):
     """
 
     resource = 'balance?active=' + '|'.join(addresses)
-    print resource
     if filter is not None:
         resource += '&filter=' + str(filter)
     if api_code is not None:
