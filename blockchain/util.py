@@ -30,18 +30,6 @@ def call_api(resource, data=None, base_url=BASE_URL):
         raise APIException(handle_response(e.read()), e.code)
 
 
-def call_api_new(resource, data=None, base_url=NEW_BASE_URL):
-    try:
-        payload = None if data is None else urlencode(data)
-        if py_version >= 3 and payload is not None:
-            payload = payload.encode('UTF-8')
-        response = urlopen(base_url + resource, payload, timeout=TIMEOUT).read()
-        return handle_response(response)
-
-    except HTTPError as e:
-        raise APIException(handle_response(e.read()), e.code)
-
-
 def handle_response(response):
     # urllib returns different types in Python 2 and 3 (str vs bytes)
     if isinstance(response, str):

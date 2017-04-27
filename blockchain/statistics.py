@@ -60,7 +60,7 @@ def get_pools(time_span=None, api_code=None):
         resource += '?timespan=' + time_span
     if api_code is not None:
         resource += '&api_code=' + api_code
-    response = util.call_api_new(resource)
+    response = util.call_api(resource, base_url='https://api.blockchain.info/')
     json_response = json.loads(response)
     return {k: v for (k, v) in json_response.items()}
 
