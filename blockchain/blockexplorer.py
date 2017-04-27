@@ -124,7 +124,10 @@ def get_multi_address(addresses, filter=None, limit=None, offset=None, api_code=
     :return: an instance of :class:`MultiAddress` class
     """
 
-    resource = 'multiaddr?active=' + '|'.join(addresses)
+    if isinstance(addresses, basestring):
+        resource = 'multiaddr?active=' + addresses
+    else:
+        resource = 'multiaddr?active=' + '|'.join(addresses)
     if filter is not None:
         if isinstance(filter, FilterType):
             resource += '&filter=' + str(filter.value)
@@ -151,7 +154,10 @@ def get_balance(addresses, filter=None, api_code=None):
     :return: a dictionary of str, :class:`Balance`
     """
 
-    resource = 'balance?active=' + '|'.join(addresses)
+    if isinstance(addresses, basestring):
+        resource = 'balance?active=' + addresses
+    else:
+        resource = 'balance?active=' + '|'.join(addresses)
     if filter is not None:
         if isinstance(filter, FilterType):
             resource += '&filter=' + str(filter.value)

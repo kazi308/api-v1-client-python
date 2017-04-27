@@ -2,7 +2,6 @@ from .exceptions import *
 import sys
 
 BASE_URL = "https://blockchain.info/"
-NEW_BASE_URL = "https://api.blockchain.info/"
 TIMEOUT = 10
 
 py_version = sys.version_info[0]
