@@ -44,7 +44,7 @@ def to_btc(ccy, value, api_code=None):
 
 
 def to_fiat(ccy, value, api_code=None):
-    """Call the 'tobtc' method and convert x value in the provided currency to BTC.
+    """Call the 'frombtc' method and convert x value in the provided currency to BTC.
 
     :param str ccy: currency code
     :param float value: BTC value to convert

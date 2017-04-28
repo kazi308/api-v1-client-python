@@ -57,7 +57,7 @@ def get_block_height(height, api_code=None):
 
 
 def get_address(address, filter=None, limit=None, offset=None, api_code=None):
-    """Get data for a single address including an address balance and list of relevant transactions
+    """Get data for a single address including an address balance and list of relevant transactions.
     
     :param str address: address(base58 or hash160) to look up
     :param FilterType filter: the filter for transactions selection (optional)
@@ -85,7 +85,7 @@ def get_address(address, filter=None, limit=None, offset=None, api_code=None):
 
 
 def get_xpub(xpub, filter=None, limit=None, offset=None, api_code=None):
-    """Get data for a single xpub including balance and list of relevant transactions
+    """Get data for a single xpub including balance and list of relevant transactions.
 
     :param str xpub: address(xpub) to look up
     :param FilterType filter: the filter for transactions selection (optional)
@@ -114,7 +114,7 @@ def get_xpub(xpub, filter=None, limit=None, offset=None, api_code=None):
 
 def get_multi_address(addresses, filter=None, limit=None, offset=None, api_code=None):
     """Get aggregate summary for multiple addresses including overall balance, per address balance
-     and list of relevant transactions
+     and list of relevant transactions.
 
     :param tuple addresses: addresses(xpub or base58) to look up
     :param FilterType filter: the filter for transactions selection (optional)
@@ -145,8 +145,7 @@ def get_multi_address(addresses, filter=None, limit=None, offset=None, api_code=
 
 
 def get_balance(addresses, filter=None, api_code=None):
-    """Get aggregate summary for multiple addresses including overall balance, per address balance
-     and list of relevant transactions
+    """Get balances for each address provided.
 
     :param tuple addresses: addresses(xpub or base58) to look up
     :param FilterType filter: the filter for transactions selection (optional)
@@ -175,8 +174,8 @@ def get_unspent_outputs(addresses, confirmations=None, limit=None, api_code=None
     """Get unspent outputs for a single address.
     
     :param tuple addresses: addresses(xpub or base58) to look up
-    :param int confirmations: minimum confirmations to include
-    :param int limit: limit number of unspent outputs to fetch
+    :param int confirmations: minimum confirmations to include (optional)
+    :param int limit: limit number of unspent outputs to fetch (optional)
     :param str api_code: Blockchain.info API code (optional)
     :return: an array of :class:`UnspentOutput` objects
     """

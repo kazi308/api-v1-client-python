@@ -47,12 +47,59 @@ Get a single address and its transactions. Returns an `Address` object.
 
 Params:
 ```
-address : str - address in the base58 or hash160 format
-```
+address : str - address(base58 or hash160) to look up
+filter : FilterType - the filter for transactions selection (optional)
+limit : int - limit number of transactions to display (optional)
+offset : int - number of transactions to skip when display (optional)```
 
 Usage:
 ```python
 address = blockexplorer.get_address('1HS9RLmKvJ7D1ZYgfPExJZQZA1DMU3DEVd')
+```
+
+####`get_xpub`
+Get a single xpub and its transactions. Returns an `Xpub` object.
+
+Params:
+```
+xpu: str xpub to look up
+filter : FilterType - the filter for transactions selection (optional)
+limit : int - limit number of transactions to display (optional)
+offset : int - number of transactions to skip when display (optional)```
+
+Usage:
+```python
+xpub = blockexplorer.get_xpub('xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn')
+```
+
+
+####`get_multi_address`
+Get aggregate summary for multiple addresses including overall balance, per address balance
+and list of relevant transactions. Returns an `MultiAddress` object.
+
+Params:
+```
+addresses : tuple - addresses(base58 or xpub) to look up
+filter : FilterType - the filter for transactions selection (optional)
+limit : int - limit number of transactions to display (optional)
+offset : int - number of transactions to skip when display (optional)```
+
+Usage:
+```python
+addresses = blockexplorer.get_multi_address('1HS9RLmKvJ7D1ZYgfPExJZQZA1DMU3DEVd', xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn)
+```
+
+####`get_balance`
+Get balances for each address provided. Returns a dictionary of str to `Balance` objects.
+
+Params:
+```
+addresses : tuple - addresses(base58 or xpub) to look up
+filter : FilterType - the filter for transactions selection (optional)
+
+Usage:
+```python
+addresses = blockexplorer.get_multi_address('1HS9RLmKvJ7D1ZYgfPExJZQZA1DMU3DEVd', xpub6CmZamQcHw2TPtbGmJNEvRgfhLwitarvzFn3fBYEEkFTqztus7W7CNbf48Kxuj1bRRBmZPzQocB6qar9ay6buVkQk73ftKE1z4tt9cPHWRn)
 ```
 
 ####`get_unspent_outputs`
@@ -60,7 +107,9 @@ Get an array of unspent outputs for an address. Returns an array of `UnspentOutp
 
 Params:
 ```
-address : str - address in the base58 or hash160 format
+addresses : tuple addresses - addresses in the base58 or xpub format
+confirmations : int - minimum confirmations to include (optional)
+limit : int - limit number of unspent outputs to fetch (optional)
 ```
 
 Usage:
@@ -97,19 +146,6 @@ At least one parameter is required.
 Usage:
 ```python
 blocks = blockexplorer.get_blocks(pool_name = 'Discus Fish')
-```
-
-####`get_inventory_data`
-Get inventory data for recent blocks and addresses (up to 1 hour old). Returns an `InventoryData` object.
-
-Params:
-```
-hash : str - tx or block hash
-```
-
-Usage:
-```python
-inv = blockexplorer.get_inventory_data('d4af240386cdacab4ca666d178afc88280b620ae308ae8d2585e9ab8fc664a94')
 ```
 
 ###Response object field definitions
@@ -186,7 +222,52 @@ total_received : int
 total_sent : int
 final_balance : int
 transactions : array of Transaction objects
+```
 
+####`SimpleAddress`
+
+```
+address : str
+n_tx : int
+total_received : int
+total_sent : int
+final_balance : int
+change_index : int
+account_index : int
+```
+
+####`MultiAddress`
+
+```
+n_tx : int
+n_tx_filtered : int
+total_received : int
+total_sent : int
+final_balance : int
+addresses : array of SimpleAddress objects
+transactions : array of Transaction objects
+```
+
+####`Xpub`
+
+```
+address : str
+n_tx : int
+total_received : int
+total_sent : int
+final_balance : int
+change_index : int
+account_index : int
+gap_limit : int
+transactions : array of Transaction objects
+```
+
+####`Balance`
+
+```
+n_tx : int
+total_received : int
+final_balance : int
 ```
 
 ####`UnspentOutput`
@@ -218,16 +299,4 @@ height : int
 hash : str
 time : int
 main_chain : bool
-```
-
-####`InventoryData`
-
-```
-hash : str
-type : str
-initial_time : int
-initial_ip : str
-nconnected : int
-relayed_count : int
-relayed_percent : int
 ```

@@ -45,6 +45,7 @@ def receive(xpub, callback, api_key):
 def callback_log(callback, api_key):
     """Call the 'v2/receive/callback_log' endpoint and returns the callback log
     for a given callback URI with parameters.
+
     :param callback: callback URI
     :param api_key: Blockchain.info API V2 key
     :return: a list of :class:`LogEntry` objects
@@ -59,6 +60,7 @@ def callback_log(callback, api_key):
 def check_gap(xpub, api_key):
     """Call the 'v2/receive/checkgap' endpoint and returns the callback log
     for a given callback URI with parameters.
+
     :param str xpub: extended public key
     :param str api_key: Blockchain.info API V2 key
     :return: an int
